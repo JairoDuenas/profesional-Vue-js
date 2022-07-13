@@ -4,8 +4,10 @@
     <input v-model="name" />
     <p>{{ name }}</p>
     <a :href="url">Link</a>
-    <input v-model="lastName" />
-    <p>{{ fullName }}</p>
+  </div>
+  <div>
+    <button @click="format">Format</button>
+    <p>{{ formattedName }}</p>
   </div>
 </template>
 
@@ -16,7 +18,8 @@ export default {
     return {
       name: '',
       url: 'https://platzi.com',
-      lastName: ''
+      lastName: '',
+      formattedName: ''
     }
   },
   computed: {
@@ -27,6 +30,11 @@ export default {
   watch: {
     name (newVal, oldVal) {
       console.log(newVal, oldVal)
+    }
+  },
+  methods: {
+    format () {
+      this.formattedName = this.name.split(' ').join('-').toUpperCase()
     }
   }
 }
