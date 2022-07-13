@@ -4,6 +4,8 @@
     <input v-model="name" />
     <p>{{ name }}</p>
     <a :href="url">Link</a>
+    <input v-model="lastName" />
+    <p>{{ fullName }}</p>
   </div>
 </template>
 
@@ -13,7 +15,13 @@ export default {
   data () {
     return {
       name: '',
-      url: 'https://platzi.com'
+      url: 'https://platzi.com',
+      lastName: ''
+    }
+  },
+  computed: {
+    fullName () {
+      return `${this.name} ${this.lastName}`
     }
   }
 }
@@ -21,4 +29,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.hello {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+  gap: 5px;
+}
 </style>
