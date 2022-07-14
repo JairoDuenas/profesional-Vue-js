@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="section">
+  <Loader v-show="isLoading" />
+  <div class="section" v-show="!isLoading">
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-start">
         <input
@@ -18,25 +19,32 @@
       </div>
       <p is-small>{{ searchMessage }}</p>
     </nav>
-
-    <div class="columns">
-      <div class="column" v-for="(track, index) in tracks" :key="index">
-        {{ track.name }} - {{ track.artist }}
+    <div class="container">
+      <div class="columns is-multiline">
+        <div class="column is-one-quarter" v-for="t in tracks" :key="t">
+          <Track :track="t" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import fetchTrackByName from '@/services/track'
+import trackService from '@/services/track'
+import Track from './Track.vue'
+import Loader from '@/components/shared/Loader.vue'
 
-const tracks = []
 export default {
-  name: 'Home-music',
+  components: {
+    Track,
+    Loader
+  },
   data () {
     return {
       searchQuery: '',
-      tracks
+      tracks: [],
+      Track,
+      isLoading: false
     }
   },
   computed: {
@@ -45,10 +53,14 @@ export default {
     }
   },
   methods: {
-    handleSearch () {
-      if (!this.searchQuery) return
-      fetchTrackByName(this.searchQuery).then((res) => {
+    search () {
+      if (!this.searchQuery) {
+        return
+      }
+      this.isLoading = true
+      trackService.search(this.searchQuery).then((res) => {
         this.tracks = res.tracks.items
+        this.isLoading = false
       })
     }
   }
