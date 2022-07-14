@@ -2,13 +2,13 @@
 <template>
   <section class="hero is-success is-small">
     <div class="hero-head">
-      <header class="navbar" role="navigation">
+      <header class="navbar">
         <div class="container navbar-menu">
           <div class="navbar-start">
-            <p class="navbar-item"><strong>📻 Platzi Music</strong></p>
+            <a href="" class="navbar-item"><strong>📻 Platzi Music</strong> </a>
           </div>
           <div class="navbar-end">
-            <p class="navbar-item"><strong>Bulma</strong></p>
+            <p class="navbar-item"></p>
           </div>
         </div>
       </header>

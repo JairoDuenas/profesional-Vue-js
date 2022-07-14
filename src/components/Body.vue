@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <Loader v-show="isLoading" />
-  <div class="section" v-show="!isLoading">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+  <section class="section" v-show="!isLoading">
+    <nav class="navbar" aria-label="main navigation">
       <div class="navbar-start">
         <input
           class="input is-primary is-large"
@@ -16,17 +16,21 @@
           >Buscar</a
         >
         <a class="button is-danger is-large" type="button">&times;</a>
+        <p class="is-small">{{ searchMessage }}</p>
       </div>
-      <p is-small>{{ searchMessage }}</p>
     </nav>
     <div class="container">
       <div class="columns is-multiline">
         <div class="column is-one-quarter" v-for="t in tracks" :key="t">
-          <Track :track="t" @select="setSelectedTrack" />
+          <Track
+            :class="{ 'is-active': t.id === selectedTrack }"
+            :track="t"
+            @select="setSelectedTrack"
+          />
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -73,7 +77,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.navbar {
+  margin-bottom: 20px;
+}
+p,
+.is-small {
+  width: 100px;
+  border: 1px solid #48c78e;
+}
 .navbar-start {
-  width: 80%;
+  width: 100%;
+}
+.is-active {
+  border: 3px solid #48c78e;
 }
 </style>
