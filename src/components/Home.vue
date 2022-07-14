@@ -28,11 +28,9 @@
 </template>
 
 <script>
-const tracks = [
-  { name: 'Muchacha', artist: 'Luis Spineta' },
-  { name: 'Hoy aca', artist: 'El pepo' },
-  { name: 'I was', artist: 'Kiss' }
-]
+import fetchTrackByName from '@/services/track'
+
+const tracks = []
 export default {
   name: 'Home-music',
   data () {
@@ -47,8 +45,11 @@ export default {
     }
   },
   methods: {
-    search () {
-      this.tracks = tracks
+    handleSearch () {
+      if (!this.searchQuery) return
+      fetchTrackByName(this.searchQuery).then((res) => {
+        this.tracks = res.tracks.items
+      })
     }
   }
 }
