@@ -1,6 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <Loader v-show="isLoading" />
+  <Notification v-show="showNotification">
+    <template v-slot:body>
+      <p name="body">No se encontraron resultados</p>
+    </template>
+  </Notification>
   <section class="section" v-show="!isLoading">
     <nav class="navbar" aria-label="main navigation">
       <div class="navbar-start">
@@ -37,11 +42,13 @@
 import trackService from '@/services/track'
 import Track from './Track.vue'
 import Loader from '@/components/shared/Loader.vue'
+import Notification from './shared/Notification.vue'
 
 export default {
   components: {
     Track,
-    Loader
+    Loader,
+    Notification
   },
   data () {
     return {
@@ -49,12 +56,22 @@ export default {
       tracks: [],
       Track,
       isLoading: false,
+      showNotification: false,
       selectedTrack: ''
     }
   },
   computed: {
     searchMessage () {
       return `Encontrados: ${this.tracks.length}`
+    }
+  },
+  watch: {
+    showNotification () {
+      if (this.showNotification) {
+        setTimeout(() => {
+          this.showNotification = false
+        }, 4000)
+      }
     }
   },
   methods: {
@@ -64,6 +81,7 @@ export default {
       }
       this.isLoading = true
       trackService.search(this.searchQuery).then((res) => {
+        this.showNotification = res.tracks.total === 0
         this.tracks = res.tracks.items
         this.isLoading = false
       })
@@ -80,7 +98,6 @@ export default {
 .navbar {
   margin-bottom: 20px;
 }
-p,
 .is-small {
   width: 100px;
   border: 1px solid #48c78e;
