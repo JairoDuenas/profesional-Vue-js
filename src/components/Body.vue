@@ -22,7 +22,7 @@
     <div class="container">
       <div class="columns is-multiline">
         <div class="column is-one-quarter" v-for="t in tracks" :key="t">
-          <Track :track="t" />
+          <Track :track="t" @select="setSelectedTrack" />
         </div>
       </div>
     </div>
@@ -44,7 +44,8 @@ export default {
       searchQuery: '',
       tracks: [],
       Track,
-      isLoading: false
+      isLoading: false,
+      selectedTrack: ''
     }
   },
   computed: {
@@ -62,6 +63,9 @@ export default {
         this.tracks = res.tracks.items
         this.isLoading = false
       })
+    },
+    setSelectedTrack (id) {
+      this.selectedTrack = id
     }
   }
 }
