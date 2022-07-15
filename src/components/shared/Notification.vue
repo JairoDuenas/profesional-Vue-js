@@ -3,7 +3,10 @@
   <div class="container">
     <div class="columns">
       <div class="column is-5 is-offset-4 has-text-centered">
-        <div class="notification is-danger">
+        <div
+          class="notification"
+          :class="{ isFound: 'isFound', isNotFound: '!isFound' }"
+        >
           <slot name="body">Algo anda mal</slot>
         </div>
       </div>
@@ -14,5 +17,13 @@
 <style lang="scss" scoped>
 .notification {
   margin: 10px;
+}
+.isFound {
+  background-color: #48c78e;
+  color: whitesmoke;
+}
+.isNotFound {
+  background-color: #f14668;
+  color: whitesmoke;
 }
 </style>

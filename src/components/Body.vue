@@ -3,7 +3,9 @@
   <Loader v-show="isLoading" />
   <Notification v-show="showNotification">
     <template v-slot:body>
-      <p name="body">No se encontraron resultados</p>
+      <p name="body">
+        {{ isFound ? searchMessage : "No se encontraron resultados" }}
+      </p>
     </template>
   </Notification>
   <section class="section" v-show="!isLoading">
@@ -21,7 +23,6 @@
           >Buscar</a
         >
         <a class="button is-danger is-large" type="button">&times;</a>
-        <p class="is-small">{{ searchMessage }}</p>
       </div>
     </nav>
     <div class="container">
@@ -69,7 +70,8 @@ export default {
     showNotification () {
       if (this.showNotification) {
         setTimeout(() => {
-          this.showNotification = false
+          this.showNotification = !this.showNotification
+          if (this.isFound) this.isFound = !this.isFound
         }, 4000)
       }
     }
@@ -80,9 +82,14 @@ export default {
         return
       }
       this.isLoading = true
+
       trackService.search(this.searchQuery).then((res) => {
-        this.showNotification = res.tracks.total === 0
+        if (res.tracks.total > 0) {
+          this.isFound = true
+        }
+        this.showNotification = res.tracks.total === 0 || this.isFound
         this.tracks = res.tracks.items
+
         this.isLoading = false
       })
     },
